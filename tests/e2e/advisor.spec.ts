@@ -104,7 +104,7 @@ test("landing, methodology, about and privacy pages render and are accessible", 
   await expect(page.getByRole("heading", { name: "How it works", level: 1 })).toBeVisible();
   await expect(page.getByText("R11. Strict ACID transactions")).toBeVisible();
   await axe(page);
-  for (const path of ["/about", "/privacy"]) {
+  for (const path of ["/about", "/privacy", "/changelog"]) {
     await page.goto(path);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await axe(page);
