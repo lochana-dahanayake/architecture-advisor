@@ -85,6 +85,14 @@ Phases 1–5 are built and merged into `main`. Phase 6 work that needs no owner 
 - ✅ `/advisor` 190.0 / 200 KB gz
 - ⏳ Round 2 (study tool): `/styles` catalog with one page per style from the KB (no AI). Round 3 (decision tool): compare two styles side by side; "what-if" (change one answer on the result, see the ranking move). Owner picked round 1 only for now (Q34)
 
+## v1.4 (2026-11-08): professional polish
+Owner: the app "doesn't feel professional enough, like a real-world application". Plan, one PR per step:
+1. ✅ **Brand and design system:** logo mark + SVG favicon, indigo brand colour (primary, focus ring), four fit colours as tokens, sticky header with "Get started", full footer (product and project links, GitHub, app and KB versions). App version bumped to 1.4.0 (`package.json` still said 0.1.0)
+2. ⏳ **Result page:** verdict card for the top pick (fit colour, score as a whole number out of 100, top reasons), fit-coloured score bars, ruled-out styles as tags
+3. ⏳ **Landing page:** trust strip (styles, sources, KB version), preview of a real result, stronger hero
+4. ⏳ **Changelog page and Markdown export** of a result (paste into a design doc or ADR)
+- Not done, owner decisions: custom domain (Q35), analytics (Q28)
+
 ## Phase 7 (future): Accounts and history
 - Supabase Auth + Postgres; `results` table storing `AdvisorResult` JSON; history list; delete.
 **Milestone:** logged-in users can save and reopen results; anonymous flow unchanged.
