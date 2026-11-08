@@ -166,5 +166,12 @@ Owner: the app looked like a template ("not professional enough"). Step 1 of the
 - **Header:** sticky with a blurred background, logo, nav, and a "Get started" button (hidden on phones, where the hero button is right there). `scroll-padding-top` keeps anchor targets below it.
 - **Footer:** logo and the honest note, "Product" and "Project" link columns (incl. the GitHub source), and a bottom line with © and "App v1.4.0 · Knowledge base v1.2.0".
 
+## As built (v1.4, 2026-11-08): result page
+Step 2 of the v1.4 plan:
+- **Verdict card:** the result header is one card with a light brand gradient: "Top recommendation", the style name with a fit badge (coloured dot + label, `FitBadge` in `components/result/fit.tsx`), its summary, and a **score ring** on the right in the fit colour (`ScoreDial`, an accessible `role="img"` with "Score 70.1 out of 100"). "Next best" and the actions stay inside the card. Scores keep one decimal (SCORING_ENGINE step 5).
+- **"Why <style> fits your project":** two cards side by side on wide screens. Left: the reasons with green ticks, and the trade-off in an amber box. Right: why not #2, and each ruled-out group as struck-through tags followed by the reason. Screen readers get the names as a sentence ("Ruled out: A, B, C."), the tags are hidden from them.
+- **Ranked list:** bars take the fit colour (green/indigo/amber/grey) instead of all being the same; the label badge is the same `FitBadge`; #1 has a brand-tinted border.
+- **Checked:** light and dark screenshots of the SaaS and IDE examples (local production build, Edge via Playwright); `npm run check` and 24/24 e2e incl. axe.
+
 ## Copy tone
 Short, friendly, second person. Explain terms once: e.g. "Elasticity: scaling up *and back down* quickly when traffic spikes." No hype words ("revolutionary", "AI-powered magic").

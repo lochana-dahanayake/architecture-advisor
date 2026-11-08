@@ -4,6 +4,7 @@ import {
   ArrowDownUpIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  CircleCheckIcon,
   CompassIcon,
   DownloadIcon,
   LinkIcon,
@@ -11,18 +12,19 @@ import {
   PrinterIcon,
   RotateCcwIcon,
   Share2Icon,
+  TriangleAlertIcon,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { kb } from "@/modules/knowledge-base";
 import { plainReasons, topPickChange, type AdvisorResult } from "@/modules/recommendation";
 import { fitFor } from "@/modules/scoring";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { encodeShareHash } from "@/components/form/share-link";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { AiPanel, aiAnnouncement } from "./ai-panel";
-import { FIT_LABELS, fmt, signed, styleName } from "./format";
+import { FitBadge } from "./fit";
+import { fmt, signed, styleName } from "./format";
 import { RankedList } from "./ranked-list";
 import { Adjustments, Excluded, Heads, HowCalculated, Mentions, Patterns } from "./result-details";
 import { Section } from "./section";
@@ -137,36 +139,96 @@ function RunnersUp({ result }: { result: AdvisorResult }) {
   );
 }
 
+/** The top pick's final score as a ring in its fit colour, with the number in the middle. */
+function ScoreDial({ score }: { score: number }) {
+  const r = 42;
+  const c = 2 * Math.PI * r;
+  return (
+    <div className="relative size-28 shrink-0" role="img" aria-label={`Score ${fmt(score)} out of 100`}>
+      <svg viewBox="0 0 100 100" className="size-full -rotate-90" aria-hidden>
+        <circle cx="50" cy="50" r={r} fill="none" strokeWidth="9" className="stroke-muted" />
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          strokeWidth="9"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - score / 100)}
+          className={FIT_STROKE[fitFor(score)]}
+        />
+      </svg>
+      <span className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden>
+        <span className="text-2xl font-semibold tabular-nums">{fmt(score)}</span>
+        <span className="text-xs text-muted-foreground">out of 100</span>
+      </span>
+    </div>
+  );
+}
+
+const FIT_STROKE = {
+  strong: "stroke-fit-strong",
+  good: "stroke-fit-good",
+  possible: "stroke-fit-possible",
+  weak: "stroke-fit-weak",
+} as const;
+
 /** "Why this fits": the rule engine's reasons in plain words, shown with or without AI. */
 function WhyItFits({ result }: { result: AdvisorResult }) {
   const r = plainReasons(result, kb);
   const name = styleName(result, result.final[0]!.styleId);
   return (
     <Section id="why-heading" title={`Why ${name} fits your project`}>
-      <div className="space-y-3 rounded-lg border p-4 text-sm">
-        <ul className="list-disc space-y-1.5 pl-5">
-          {r.top.map((t) => (
-            <li key={t}>{t}</li>
-          ))}
-        </ul>
-        {r.tradeOff && (
-          <p>
-            <span className="font-medium">Trade-off: </span>
-            {r.tradeOff}
-          </p>
+      <div className="grid gap-4 text-sm lg:grid-cols-2">
+        <div className="space-y-4 rounded-xl border bg-card p-5">
+          <ul className="space-y-2.5">
+            {r.top.map((t) => (
+              <li key={t} className="flex gap-2.5">
+                <CircleCheckIcon className="mt-0.5 size-4 shrink-0 text-fit-strong" aria-hidden />
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+          {r.tradeOff && (
+            <p className="flex gap-2.5 rounded-lg bg-warning-muted p-3">
+              <TriangleAlertIcon className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
+              <span>
+                <span className="font-medium">Trade-off: </span>
+                {r.tradeOff}
+              </span>
+            </p>
+          )}
+        </div>
+        {(r.runnerUp || r.ruledOut.length > 0) && (
+          <div className="space-y-4 rounded-xl border bg-card p-5">
+            {r.runnerUp && (
+              <p>
+                <span className="font-medium">Why not {styleName(result, r.runnerUp.styleId)} (#2): </span>
+                {r.runnerUp.why}
+              </p>
+            )}
+            {r.ruledOut.map((g) => (
+              <div key={g.styleIds.join()} className="space-y-2">
+                <p className="font-medium">
+                  Ruled out:{" "}
+                  <span className="sr-only">{g.styleIds.map((id) => styleName(result, id)).join(", ")}.</span>
+                </p>
+                <ul className="flex flex-wrap gap-1.5" aria-hidden>
+                  {g.styleIds.map((id) => (
+                    <li
+                      key={id}
+                      className="rounded-full border border-dashed px-2.5 py-0.5 text-xs text-muted-foreground line-through decoration-muted-foreground/50"
+                    >
+                      {styleName(result, id)}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-muted-foreground">{g.why}</p>
+              </div>
+            ))}
+          </div>
         )}
-        {r.runnerUp && (
-          <p>
-            <span className="font-medium">Why not {styleName(result, r.runnerUp.styleId)} (#2): </span>
-            {r.runnerUp.why}
-          </p>
-        )}
-        {r.ruledOut.map((g) => (
-          <p key={g.styleIds.join()}>
-            <span className="font-medium">Ruled out: {g.styleIds.map((id) => styleName(result, id)).join(", ")}. </span>
-            {g.why}
-          </p>
-        ))}
       </div>
     </Section>
   );
@@ -215,27 +277,30 @@ export function ResultView({
           </AlertDescription>
         </Alert>
       )}
-      <header className="space-y-4">
-        <p className="text-sm text-muted-foreground">Top recommendation</p>
-        <div className="flex flex-wrap items-center gap-3">
-          <h1
-            id="result-heading"
-            ref={headingRef}
-            tabIndex={-1}
-            className="text-3xl font-semibold tracking-tight outline-none"
-          >
-            {name}
-          </h1>
-          <Badge variant="secondary" className="text-sm">
-            {FIT_LABELS[fitFor(top.finalScore)]} · {fmt(top.finalScore)}
-          </Badge>
+      <header className="space-y-5 rounded-2xl border bg-gradient-to-br from-brand-muted via-card to-card p-6 shadow-sm sm:p-8">
+        <div className="flex flex-col-reverse gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-primary">Top recommendation</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1
+                id="result-heading"
+                ref={headingRef}
+                tabIndex={-1}
+                className="text-3xl font-semibold tracking-tight outline-none sm:text-4xl"
+              >
+                {name}
+              </h1>
+              <FitBadge fit={fitFor(top.finalScore)} className="bg-background/60" />
+            </div>
+            {topStyle && <p className="max-w-prose text-muted-foreground">{topStyle.summary}</p>}
+            {top.aiDelta !== 0 && (
+              <p className="text-sm text-muted-foreground">
+                Rule score {fmt(top.ruleScore)} · AI adjustment {signed(top.aiDelta)} · Final {fmt(top.finalScore)}
+              </p>
+            )}
+          </div>
+          <ScoreDial score={top.finalScore} />
         </div>
-        {top.aiDelta !== 0 && (
-          <p className="text-sm text-muted-foreground">
-            Rule score {fmt(top.ruleScore)} · AI adjustment {signed(top.aiDelta)} · Final {fmt(top.finalScore)}
-          </p>
-        )}
-        {topStyle && <p className="max-w-prose">{topStyle.summary}</p>}
         <RunnersUp result={result} />
         <div className="no-print flex flex-wrap gap-2">
           <Button variant="outline" onClick={onEdit}>
