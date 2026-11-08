@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FIT_LABELS, fmt, signed, signedInt } from "./format";
+import { FIT_BG, FitBadge } from "./fit";
+import { fmt, signed, signedInt } from "./format";
 
 const SHOWN_BY_DEFAULT = 5;
 
@@ -74,7 +75,10 @@ export function RankedList({ result }: { result: AdvisorResult }) {
         {rows.map((f) => {
           const name = result.snapshot.styles[f.styleId]!.name;
           return (
-            <li key={f.styleId} className="rounded-lg border">
+            <li
+              key={f.styleId}
+              className={`rounded-xl border bg-card transition-colors hover:border-foreground/20 ${f.rank === 1 ? "border-primary/40" : ""}`}
+            >
               <Collapsible>
                 <div className="grid grid-cols-[2rem_1fr] gap-x-2 gap-y-1 p-3 sm:grid-cols-[2rem_14rem_1fr_auto] sm:items-center">
                   <span className="text-lg font-semibold tabular-nums text-muted-foreground">{f.rank}</span>
@@ -85,7 +89,7 @@ export function RankedList({ result }: { result: AdvisorResult }) {
                     aria-label={`Final score ${fmt(f.finalScore)} out of 100${f.aiDelta !== 0 ? `, rule score ${fmt(f.ruleScore)}` : ""}`}
                   >
                     <span
-                      className="absolute inset-y-0 left-0 rounded-full bg-primary transition-[width] duration-500 motion-reduce:transition-none"
+                      className={`absolute inset-y-0 left-0 rounded-full ${FIT_BG[fitFor(f.finalScore)]} transition-[width] duration-500 motion-reduce:transition-none`}
                       style={{ width: `${f.finalScore}%` }}
                     />
                     {f.aiDelta !== 0 && (
@@ -98,7 +102,7 @@ export function RankedList({ result }: { result: AdvisorResult }) {
                   <span className="col-start-2 flex items-center gap-2 sm:col-start-auto">
                     <span className="font-semibold tabular-nums">{fmt(f.finalScore)}</span>
                     {f.aiDelta !== 0 && <Badge variant="info">AI {signed(f.aiDelta)}</Badge>}
-                    <Badge variant="outline">{FIT_LABELS[fitFor(f.finalScore)]}</Badge>
+                    <FitBadge fit={fitFor(f.finalScore)} />
                   </span>
                 </div>
                 <CollapsibleTrigger className="group flex w-full items-center gap-1 border-t px-3 py-2 text-left text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50">

@@ -88,7 +88,7 @@ Phases 1–5 are built and merged into `main`. Phase 6 work that needs no owner 
 ## v1.4 (2026-11-08): professional polish
 Owner: the app "doesn't feel professional enough, like a real-world application". Plan, one PR per step:
 1. ✅ **Brand and design system:** logo mark + SVG favicon, indigo brand colour (primary, focus ring), four fit colours as tokens, sticky header with "Get started", full footer (product and project links, GitHub, app and KB versions). App version bumped to 1.4.0 (`package.json` still said 0.1.0)
-2. ⏳ **Result page:** verdict card for the top pick (fit colour, score as a whole number out of 100, top reasons), fit-coloured score bars, ruled-out styles as tags
+2. ✅ **Result page:** verdict card for the top pick (gradient card, fit badge, score ring in the fit colour), "Why it fits" as two cards (reasons with ticks and a highlighted trade-off; #2 and ruled-out styles as struck-through tags), fit-coloured score bars. `/advisor` 190.6 / 200 KB gz
 3. ⏳ **Landing page:** trust strip (styles, sources, KB version), preview of a real result, stronger hero
 4. ⏳ **Changelog page and Markdown export** of a result (paste into a design doc or ADR)
 - Not done, owner decisions: custom domain (Q35), analytics (Q28)
