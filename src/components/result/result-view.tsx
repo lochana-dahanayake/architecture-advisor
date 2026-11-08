@@ -7,6 +7,7 @@ import {
   CircleCheckIcon,
   CompassIcon,
   DownloadIcon,
+  FileTextIcon,
   LinkIcon,
   PencilIcon,
   PrinterIcon,
@@ -25,20 +26,36 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { AiPanel, aiAnnouncement } from "./ai-panel";
 import { FitBadge } from "./fit";
 import { fmt, signed, styleName } from "./format";
+import { resultToMarkdown } from "./markdown";
 import { RankedList } from "./ranked-list";
 import { Adjustments, Excluded, Heads, HowCalculated, Mentions, Patterns } from "./result-details";
 import { Section } from "./section";
 import { TradeoffTable } from "./tradeoff-table";
 
-function downloadJson(result: AdvisorResult) {
-  const blob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+function download(text: string, type: string, ext: string, result: AdvisorResult) {
+  const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `architecture-advice-${result.createdAt.slice(0, 10)}.json`;
+  a.download = `architecture-advice-${result.createdAt.slice(0, 10)}.${ext}`;
   a.click();
   URL.revokeObjectURL(url);
 }
+
+const downloadJson = (result: AdvisorResult) =>
+  download(JSON.stringify(result, null, 2), "application/json", "json", result);
+
+const downloadMarkdown = (result: AdvisorResult) =>
+  download(
+    resultToMarkdown(
+      result,
+      kb,
+      `${window.location.origin}${window.location.pathname}${encodeShareHash(result.input)}`,
+    ),
+    "text/markdown",
+    "md",
+    result,
+  );
 
 /** "Copy link" (FR-37): copies a URL that reopens this rule result; shows the link to copy by hand if the clipboard is blocked. */
 function CopyLink({ result }: { result: AdvisorResult }) {
@@ -106,6 +123,9 @@ function ShareAndSave({ result }: { result: AdvisorResult }) {
       <div id={id} hidden={!open} className="basis-full">
         <div className="flex flex-wrap gap-2 rounded-lg bg-muted/50 p-2">
           <CopyLink result={result} />
+          <Button variant="ghost" onClick={() => downloadMarkdown(result)}>
+            <FileTextIcon aria-hidden /> Download Markdown
+          </Button>
           <Button variant="ghost" onClick={() => downloadJson(result)}>
             <DownloadIcon aria-hidden /> Download JSON
           </Button>

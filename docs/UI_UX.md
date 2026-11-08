@@ -10,6 +10,7 @@ Principles: plain language first, jargon explained inline (tooltips with a one-l
 | `/methodology` | How scoring works: formula, levels, rules, sources, what's general knowledge. Generated from KB data. Builds trust and is great for a portfolio |
 | `/styles` + `/styles/[id]` | *(v1.1)* Browsable catalog of styles, scores and patterns from the KB |
 | `/about` | Project, author, limitations, short privacy summary |
+| `/changelog` | *(v1.4)* "What's new": release notes per version in plain words, newest first. Keep in step with ROADMAP's v1.x sections |
 | `/privacy` | What is sent where and what is kept; the AI providers and host with links to their terms (AI_INTEGRATION §9.6). Linked from the notes notice, `/about` and the footer |
 
 ## Form: 4-step stepper
@@ -180,6 +181,12 @@ Step 3 of the v1.4 plan:
 - **Stats strip:** styles, quality attributes, published sources and KB version, all read from the KB (13 / 13 / 12 / v1.2.0 today).
 - **Closing call to action:** "Ready to choose an architecture?" with Start now and a link to `/privacy`. It deliberately doesn't say "nothing is stored": AI answers are cached for up to 30 days (privacy page).
 - **Checked:** light desktop and dark 390 px screenshots; `npm run check`; e2e 24/24 (the "answers survive a refresh" test failed once under parallel load and passed 3/3 alone, a timing flake, not this change).
+
+## As built (v1.4, 2026-11-08): changelog and Markdown export
+Step 4 of the v1.4 plan:
+- **`/changelog`:** a timeline of v1.0–v1.4 with a date and three to five plain bullets each; the newest has a "Latest" badge. Linked from the footer ("What's new") and from the version line at the bottom. axe-checked in e2e with `/about` and `/privacy`.
+- **Download Markdown** (Share & save, before Download JSON): `resultToMarkdown()` in `components/result/markdown.ts` writes the top pick with fit and score, the plain reasons, the AI summary and cautions (when there is an explanation), the full ranking as a table, the top 3 on the user's priorities, and a link that reopens the result. Pure and unit-tested (`tests/form/markdown.test.ts`). It leaves out the free-text notes, like the share link (Q29), because it is made to be pasted into shared documents.
+- **Checked:** `npm run check` (247 tests); e2e 22/24 in parallel, the two failures were Edge crashing at `browser.newContext` before any page loaded (environment), and the same test passes alone.
 
 ## Copy tone
 Short, friendly, second person. Explain terms once: e.g. "Elasticity: scaling up *and back down* quickly when traffic spikes." No hype words ("revolutionary", "AI-powered magic").

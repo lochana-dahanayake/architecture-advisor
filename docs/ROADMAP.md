@@ -90,7 +90,7 @@ Owner: the app "doesn't feel professional enough, like a real-world application"
 1. ✅ **Brand and design system:** logo mark + SVG favicon, indigo brand colour (primary, focus ring), four fit colours as tokens, sticky header with "Get started", full footer (product and project links, GitHub, app and KB versions). App version bumped to 1.4.0 (`package.json` still said 0.1.0)
 2. ✅ **Result page:** verdict card for the top pick (gradient card, fit badge, score ring in the fit colour), "Why it fits" as two cards (reasons with ticks and a highlighted trade-off; #2 and ruled-out styles as struck-through tags), fit-coloured score bars. `/advisor` 190.6 / 200 KB gz
 3. ✅ **Landing page:** two-column hero with a live result preview (the Growing SaaS example, scored by the real engine at build time), three promises, a stats strip from the KB, example cards with hover arrows, icon steps and a closing call to action
-4. ⏳ **Changelog page and Markdown export** of a result (paste into a design doc or ADR)
+4. ✅ **Changelog page and Markdown export:** `/changelog` ("What's new", v1.0–v1.4 in plain words, linked from the footer and the version line); "Download Markdown" in Share & save (`resultToMarkdown()`, unit-tested, notes left out like the share link)
 - Not done, owner decisions: custom domain (Q35), analytics (Q28)
 
 ## Phase 7 (future): Accounts and history
