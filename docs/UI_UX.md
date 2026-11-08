@@ -5,7 +5,7 @@ Principles: plain language first, jargon explained inline (tooltips with a one-l
 ## Pages (v1)
 | Route | Purpose |
 |---|---|
-| `/` | Landing: one main button **"Start a new recommendation"** (`/advisor?new`, always a blank form), then **"Or explore an example"** with the six example cards (`/advisor?example=<id>`, secondary), then "How it works" in 3 steps. The honest note lives in the footer |
+| `/` | Landing: hero with one main button **"Start a new recommendation"** (`/advisor?new`, always a blank form) and a live preview of an example result, a stats strip, then **"Or explore an example"** with the six example cards (`/advisor?example=<id>`, secondary), then "How it works" in 3 steps and a closing call to action. The honest note lives in the footer (v1.4) |
 | `/advisor` | The form (stepper) and the result on the same page (result replaces form; "Edit answers" goes back with state kept). Opens straight on a blank step 1 |
 | `/methodology` | How scoring works: formula, levels, rules, sources, what's general knowledge. Generated from KB data. Builds trust and is great for a portfolio |
 | `/styles` + `/styles/[id]` | *(v1.1)* Browsable catalog of styles, scores and patterns from the KB |
@@ -172,6 +172,14 @@ Step 2 of the v1.4 plan:
 - **"Why <style> fits your project":** two cards side by side on wide screens. Left: the reasons with green ticks, and the trade-off in an amber box. Right: why not #2, and each ruled-out group as struck-through tags followed by the reason. Screen readers get the names as a sentence ("Ruled out: A, B, C."), the tags are hidden from them.
 - **Ranked list:** bars take the fit colour (green/indigo/amber/grey) instead of all being the same; the label badge is the same `FitBadge`; #1 has a brand-tinted border.
 - **Checked:** light and dark screenshots of the SaaS and IDE examples (local production build, Edge via Playwright); `npm run check` and 24/24 e2e incl. axe.
+
+## As built (v1.4, 2026-11-08): landing page
+Step 3 of the v1.4 plan:
+- **Hero:** a "Based on published architecture books" pill, the same headline and buttons (How it works is now an outline button), and three short promises with ticks: "Free, no account", "Same answers, same result", "Works with AI turned off". All three are true by design (no accounts; the engine is pure; AI is optional).
+- **Result preview:** on the right (below on phones), the top 3 of the Growing SaaS example with fit-coloured bars and its fit badge, computed with `score()` at build time, so it can never drift from the real engine. The whole card links to that example.
+- **Stats strip:** styles, quality attributes, published sources and KB version, all read from the KB (13 / 13 / 12 / v1.2.0 today).
+- **Closing call to action:** "Ready to choose an architecture?" with Start now and a link to `/privacy`. It deliberately doesn't say "nothing is stored": AI answers are cached for up to 30 days (privacy page).
+- **Checked:** light desktop and dark 390 px screenshots; `npm run check`; e2e 24/24 (the "answers survive a refresh" test failed once under parallel load and passed 3/3 alone, a timing flake, not this change).
 
 ## Copy tone
 Short, friendly, second person. Explain terms once: e.g. "Elasticity: scaling up *and back down* quickly when traffic spikes." No hype words ("revolutionary", "AI-powered magic").
