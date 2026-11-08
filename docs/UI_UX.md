@@ -159,5 +159,12 @@ Owner asked for better usability and UI (Q34) and picked "UI quick wins" first. 
 - **Tests:** e2e specs open "Share & save" before Copy link / Download JSON; 24/24 Playwright tests and axe pass on desktop and mobile.
 - **Bundle:** `/advisor` 190.0 KB gz (was 189.7).
 
+## As built (v1.4, 2026-11-08): brand and design system
+Owner: the app looked like a template ("not professional enough"). Step 1 of the v1.4 plan (ROADMAP):
+- **Brand:** a logo mark (a top block on two columns, `src/components/brand/logo.tsx`, same drawing as the favicon `src/app/icon.svg`; the old `favicon.ico` is gone). Brand colour indigo: `--primary` is `oklch(0.5 0.2 275)` in light mode (white text on it) and `oklch(0.72 0.15 275)` with dark text in dark mode; the focus ring uses the same hue. `--brand-muted` for tinted panels.
+- **Fit colours:** `--fit-strong` (green), `--fit-good` (indigo), `--fit-possible` (amber), `--fit-weak` (grey) for bars and markers. Always next to the text label ("Good fit"), never the only signal.
+- **Header:** sticky with a blurred background, logo, nav, and a "Get started" button (hidden on phones, where the hero button is right there). `scroll-padding-top` keeps anchor targets below it.
+- **Footer:** logo and the honest note, "Product" and "Project" link columns (incl. the GitHub source), and a bottom line with © and "App v1.4.0 · Knowledge base v1.2.0".
+
 ## Copy tone
 Short, friendly, second person. Explain terms once: e.g. "Elasticity: scaling up *and back down* quickly when traffic spikes." No hype words ("revolutionary", "AI-powered magic").
