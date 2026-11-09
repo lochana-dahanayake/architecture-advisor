@@ -9,6 +9,14 @@ export const metadata: Metadata = {
 /** Release notes in plain words. Keep in step with docs/ROADMAP.md (the v1.x sections). */
 const releases = [
   {
+    version: "1.5",
+    date: "2026-11-09",
+    title: "From architecture to tools",
+    items: [
+      "The result ends with a next step: open Tech Stack Advisor, our companion app, with your recommended style already set, to pick a language, frameworks, database and hosting that work together.",
+    ],
+  },
+  {
     version: "1.4",
     date: "2026-11-08",
     title: "A cleaner, clearer look",
