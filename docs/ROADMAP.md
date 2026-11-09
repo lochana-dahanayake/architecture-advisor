@@ -93,6 +93,9 @@ Owner: the app "doesn't feel professional enough, like a real-world application"
 4. ✅ **Changelog page and Markdown export:** `/changelog` ("What's new", v1.0–v1.4 in plain words, linked from the footer and the version line); "Download Markdown" in Share & save (`resultToMarkdown()`, unit-tested, notes left out like the share link)
 - Not done, owner decisions: custom domain (Q35), analytics (Q28)
 
+## v1.5 (2026-11-09): link to Tech Stack Advisor
+- ✅ The result page ends with **"Next step: choose the tools"**, linking to the companion app with the top style: `https://tech-stack-advisor-one.vercel.app/advisor?style=<style-id>`. Tech Stack Advisor keeps the same style ids (its `meta.architectureStyles`, copied from our `styles.json` v1.2.0; checked equal 2026-11-09) and starts its form with that style. If a style is added or renamed here, update that list there too. E2E: the ticketing example links with `style=space-based`.
+
 ## Phase 7 (future): Accounts and history
 - Supabase Auth + Postgres; `results` table storing `AdvisorResult` JSON; history list; delete.
 **Milestone:** logged-in users can save and reopen results; anonymous flow unchanged.

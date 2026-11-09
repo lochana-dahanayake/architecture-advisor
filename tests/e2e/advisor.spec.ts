@@ -13,6 +13,10 @@ test("an example opens its rules-only result with the AI 'not enabled' state", a
   await expect(page.getByRole("heading", { name: "All styles, ranked" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Trade-off comparison" })).toBeVisible();
   await expect(page.getByRole("columnheader", { name: "Space-based architecture" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open Tech Stack Advisor" })).toHaveAttribute(
+    "href",
+    "https://tech-stack-advisor-one.vercel.app/advisor?style=space-based",
+  );
   await expect(aiPanel(page).getByText("AI not enabled yet")).toBeVisible();
   await expect(page).toHaveURL(/\/advisor$/);
   await axe(page);

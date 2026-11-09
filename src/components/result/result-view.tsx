@@ -8,6 +8,7 @@ import {
   CompassIcon,
   DownloadIcon,
   FileTextIcon,
+  LayersIcon,
   LinkIcon,
   PencilIcon,
   PrinterIcon,
@@ -254,6 +255,34 @@ function WhyItFits({ result }: { result: AdvisorResult }) {
   );
 }
 
+/** The companion app (Q2): it takes this result's style as `/advisor?style=<id>` (same style ids as our KB). */
+export const TECH_STACK_ADVISOR_URL = "https://tech-stack-advisor-one.vercel.app";
+
+/** "Next step": open Tech Stack Advisor with the recommended style, to pick a language, frameworks, database and host. */
+function NextStep({ styleId, name }: { styleId: string; name: string }) {
+  return (
+    <section
+      aria-labelledby="next-step-heading"
+      className="no-print flex flex-col gap-4 rounded-2xl border bg-card p-6 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div className="space-y-1">
+        <h2 id="next-step-heading" className="text-lg font-semibold tracking-tight">
+          Next step: choose the tools
+        </h2>
+        <p className="max-w-prose text-sm text-muted-foreground">
+          Tech Stack Advisor, our companion app, recommends a language, frontend, backend, database and hosting that
+          work together. It starts with {name} as your architecture style.
+        </p>
+      </div>
+      <Button asChild>
+        <a href={`${TECH_STACK_ADVISOR_URL}/advisor?style=${encodeURIComponent(styleId)}`}>
+          <LayersIcon aria-hidden /> Open Tech Stack Advisor
+        </a>
+      </Button>
+    </section>
+  );
+}
+
 export function ResultView({
   result,
   aiPending,
@@ -371,6 +400,8 @@ export function ResultView({
       >
         <TradeoffTable result={result} />
       </Section>
+
+      <NextStep styleId={top.styleId} name={name} />
 
       <Patterns result={result} />
       <Mentions result={result} />
