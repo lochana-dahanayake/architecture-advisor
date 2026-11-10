@@ -5,8 +5,8 @@ Each phase ends with something demonstrable. The app is deployable from phase 4 
 ## Phase 0: Planning ✅ (this set of docs)
 Done locally 2026-10-21. Building continues in **Claude Code on the web** (cloud session) on repo `lochana-dahanayake/architecture-advisor`, starting from `docs/KICKOFF_PROMPT.md`. First cloud session scope: research tasks + Phases 1–4 (rules-only app, not deployed). Phase 5 needs owner-provided API keys; deployment needs the owner's Vercel account.
 
-## Build status (updated 2026-10-20, end of build session 4)
-Phases 1–5 are built and merged into `main`. Phase 6 work that needs no owner account is done, including the shareable link (session 5). v1.0 is live at https://architecture-advisor-pink.vercel.app (session 6, 2026-10-21). Handoff for the next session: `docs/HANDOFF.md`.
+## Build status (updated 2026-11-10, session 10)
+Phases 0–6 are done and v1.5.0 is live at https://architecture-advisor-pink.vercel.app (v1.0 launched 2026-10-21; v1.1–v1.5 below). All owner questions are closed (Q25, Q28, Q29, Q35 on 2026-11-10: no Upstash, no analytics, notes stay out of links, no custom domain). Only optional work is left: usability rounds 2–3 (Q34, when the owner says go) and Phase 7. Handoff for the next session: `docs/HANDOFF.md`.
 
 ## Phase 1: Knowledge base finalised ✅
 - ✅ Research for Q14/Q15 + spot-checks (KB draft §8)
@@ -41,10 +41,10 @@ Phases 1–5 are built and merged into `main`. Phase 6 work that needs no owner 
 **Milestone:** public URL that gives useful, explainable recommendations with no AI. Share with a few classmates for feedback.
 ✅ Built in session 2: result page (ranked list, why this score, KB trade-off table, adjustments, conflicts, excluded, patterns, mentions, how calculated, JSON download, print), `/methodology` and `/about`, `/api/explain` returning `disabled` with `AI_MODE=off`. ✅ Vercel deploy (session 6, 2026-10-21): https://architecture-advisor-pink.vercel.app, deployed straight with `AI_MODE=live` since Phase 5 was already done.
 
-## Phase 5: AI layer ✅ (built 2026-10-20; Upstash deferred, Q25)
+## Phase 5: AI layer ✅ (built 2026-10-20; no Upstash, Q25)
 - ✅ `src/modules/ai/` + `/api/explain`: prompt, schema, validation, redaction, Gemini/Groq adapters, chain with timeouts, breaker and repair retry, T1/T2 cache, rate limit, global budget, mock mode, mocked tests
 - ✅ Live check: Gemini OK through the route (session 3); Groq OK through the route with an empty Gemini key, valid after one repair retry (session 4, Q26 closed)
-- ⏳ Upstash (shared cache/limits across instances): waits on the owner (Q25); in-memory store until then
+- ✖ Upstash (shared cache/limits across instances): not used (Q25, decided 2026-11-10); the in-memory store stays
 - ⏳ `eval:ai` script and prompt tuning: later, with real traffic
 - `/api/explain`, prompt builder, glossary matching, redaction, provider adapters (Gemini 3.5 Flash-Lite, Groq), chain with timeouts and breaker, Zod + consistency validation, repair retry.
 - Owner: get a Gemini API key (AI Studio) and a Groq key; add Upstash through the Vercel Marketplace (one click, env vars injected).
@@ -64,7 +64,7 @@ Phases 1–5 are built and merged into `main`. Phase 6 work that needs no owner 
 - ✅ Shareable "Copy link" (FR-37, session 5): answers in the URL hash, checked by the engine's `checkInput`; partial and broken links show a notice; notes left out (Q29)
 - ✅ `/advisor` 187.5 / 200 KB gz
 - ✅ Vercel project + env vars, auto-redeploy from `main` (session 6); live smoke test passed (rules, AI ok, opt-out, shared link); Lighthouse on the real URL (UI_UX "As built (launch)"); README screenshots in `docs/screenshots/`; tagged `v1.0.0`
-- ⏳ Upstash (Q25) and analytics (Q28): owner decisions; launched with the defaults (no / no)
+- ✖ Upstash (Q25) and analytics (Q28): not used (decided 2026-11-10)
 **Milestone:** v1.0 launch.
 
 ## v1.1 (2026-10-21): owner feedback
@@ -91,7 +91,7 @@ Owner: the app "doesn't feel professional enough, like a real-world application"
 2. ✅ **Result page:** verdict card for the top pick (gradient card, fit badge, score ring in the fit colour), "Why it fits" as two cards (reasons with ticks and a highlighted trade-off; #2 and ruled-out styles as struck-through tags), fit-coloured score bars. `/advisor` 190.6 / 200 KB gz
 3. ✅ **Landing page:** two-column hero with a live result preview (the Growing SaaS example, scored by the real engine at build time), three promises, a stats strip from the KB, example cards with hover arrows, icon steps and a closing call to action
 4. ✅ **Changelog page and Markdown export:** `/changelog` ("What's new", v1.0–v1.4 in plain words, linked from the footer and the version line); "Download Markdown" in Share & save (`resultToMarkdown()`, unit-tested, notes left out like the share link)
-- Not done, owner decisions: custom domain (Q35), analytics (Q28)
+- ✖ Custom domain (Q35) and analytics (Q28): declined by the owner (2026-11-10)
 
 ## v1.5 (2026-11-09): link to Tech Stack Advisor
 - ✅ The result page ends with **"Next step: choose the tools"**, linking to the companion app with the top style: `https://tech-stack-advisor-one.vercel.app/advisor?style=<style-id>`. Tech Stack Advisor keeps the same style ids (its `meta.architectureStyles`, copied from our `styles.json` v1.2.0; checked equal 2026-11-09) and starts its form with that style. If a style is added or renamed here, update that list there too. E2E: the ticketing example links with `style=space-based`.

@@ -31,13 +31,12 @@ Last updated 2026-10-22. Read `CLAUDE.md` first (note the **commit identity rule
 | Tests | 242 Vitest tests in `npm run check` (24 golden scenarios); no test calls a real provider. Optional Playwright: 24 tests |
 
 ## Waiting on the owner
-1. **Q25 Upstash**, **Q28 analytics**, **Q29 notes in shared links:** launched with the defaults (no / no / notes out). Apply only if the owner answers.
+Nothing. Q25 (Upstash), Q28 (analytics), Q29 (notes in links) and Q35 (custom domain) were closed on 2026-11-10: no / no / notes out / no.
 
 The prompt for the next session is in `docs/KICKOFF_PROMPT.md`.
 
 ## Next
 0. **Usability rounds 2–3 (Q34), only when the owner says go:** round 2 = `/styles` catalog, one page per style built from the KB (study tool); round 3 = compare two styles side by side and a "what-if" on the result (decision tool). Watch the `/advisor` budget (190.0 / 200 KB gz): put the catalog on its own route and keep what-if light.
-1. If Q25 = yes: an Upstash `KvStore` adapter. If Q28 = yes: `<Analytics />` + a line on `/privacy`. If Q29 = include notes: add `n` to the link and update `/privacy`.
 2. Smaller leftovers (keep `/advisor` under 200 KB gz, 189.7 now): the rate-limited message could show when the limit resets (UI_UX States table); a refresh during the AI request doesn't resume it (shows Retry).
 3. Watch the logs: the first AI call after a deploy hit Gemini's 10 s timeout (cold start) and Groq answered instead; later calls took Gemini ~2.6 s. If Gemini timeouts keep showing up in the `event: "ai"` lines, consider a slightly longer Gemini timeout (AI_INTEGRATION §1).
 4. Optional: share the URL with a few classmates for feedback (Phase 4 milestone), then `eval:ai` and prompt tuning with real traffic (Phase 5 leftover).
