@@ -50,5 +50,6 @@ docs/private/
 /test-results/
 /blob-report/
 
-# graft's local graph cache — regenerable, not committed (run `graft build`).
+# graft (local code-search tool): its graph cache and search-ignore file stay on this machine.
 /graft/
+/.ignore
