@@ -81,15 +81,15 @@ The AI can never break the result: on any failure the page keeps the complete ru
 
 ### Decisions (ADRs)
 
-| ADR                                                      | Decision                                                             |
-| -------------------------------------------------------- | -------------------------------------------------------------------- |
-| [001](docs/adr/001-modular-monolith-on-nextjs.md)        | Modular monolith on Next.js / Vercel                                 |
-| [002](docs/adr/002-hybrid-rules-plus-bounded-ai.md)      | Hybrid rule engine + AI, AI bounded to ±5 points                     |
-| [003](docs/adr/003-kb-as-versioned-json.md)              | Knowledge base as versioned JSON + Zod, no database in v1            |
-| [004](docs/adr/004-engine-in-browser-and-server.md)      | One pure engine, run in the browser and on the server                |
-| [005](docs/adr/005-ai-fallback-chain.md)                 | Gemini Flash-Lite → Groq → rules-only fallback chain                 |
-| [006](docs/adr/006-upstash-for-cache-and-rate-limits.md) | Upstash Redis for cache and rate limits (in-memory until it's added) |
-| [007](docs/adr/007-patterns-shown-not-ranked.md)         | Patterns are shown as companions, not ranked                         |
+| ADR                                                      | Decision                                                                   |
+| -------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [001](docs/adr/001-modular-monolith-on-nextjs.md)        | Modular monolith on Next.js / Vercel                                       |
+| [002](docs/adr/002-hybrid-rules-plus-bounded-ai.md)      | Hybrid rule engine + AI, AI bounded to ±5 points                           |
+| [003](docs/adr/003-kb-as-versioned-json.md)              | Knowledge base as versioned JSON + Zod, no database in v1                  |
+| [004](docs/adr/004-engine-in-browser-and-server.md)      | One pure engine, run in the browser and on the server                      |
+| [005](docs/adr/005-ai-fallback-chain.md)                 | Gemini Flash-Lite → Groq → rules-only fallback chain                       |
+| [006](docs/adr/006-upstash-for-cache-and-rate-limits.md) | Upstash Redis for cache and rate limits (superseded: in-memory store, Q25) |
+| [007](docs/adr/007-patterns-shown-not-ranked.md)         | Patterns are shown as companions, not ranked                               |
 
 ## Run it locally
 
@@ -151,7 +151,7 @@ Keys are server-only and must never start with `NEXT_PUBLIC_` (a fitness check f
 | [AI integration](docs/AI_INTEGRATION.md)             | Providers, prompts, validation, caching                  |
 | [Architecture](docs/ARCHITECTURE.md)                 | The app's own architecture (C4, modules, ADRs)           |
 | [UI/UX](docs/UI_UX.md)                               | Pages, form, result layout, states                       |
-| [Tech stack](docs/TECH_STACK.md)                     | Next.js, TypeScript, Vercel, Upstash                     |
+| [Tech stack](docs/TECH_STACK.md)                     | Next.js, TypeScript, Vercel                              |
 | [Testing](docs/TESTING_STRATEGY.md)                  | Unit, property, golden-scenario and AI tests             |
 | [Open questions](docs/OPEN_QUESTIONS.md)             | Decisions log                                            |
 | [ADRs](docs/adr/README.md)                           | Architecture decision records 001–007                    |
@@ -159,4 +159,4 @@ Keys are server-only and must never start with `NEXT_PUBLIC_` (a fitness check f
 
 ## Stack
 
-Next.js · TypeScript · Tailwind + shadcn/ui · Zod · Vercel AI SDK · Vitest · Playwright · Vercel (free tier) · Upstash Redis (planned, Q25)
+Next.js · TypeScript · Tailwind + shadcn/ui · Zod · Vercel AI SDK · Vitest · Playwright · Vercel (free tier)

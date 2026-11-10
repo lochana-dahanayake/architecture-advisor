@@ -74,11 +74,14 @@
 |---|---|---|
 | Q34 | "Improve usability and UI" | Owner wants the app to work as a portfolio piece, a study tool and a decision tool, and chose a three-round plan with **round 1 only for now**: result header (Share & save toggle, "Next best"), AI "others" folded, step-1 progress and scroll-to-next. Dark mode already existed. Rounds 2 (style catalog) and 3 (compare + what-if) wait for the owner's go-ahead. Details: UI_UX "As built (v1.3)" |
 
-## Still open
-| # | Topic | Question |
+## Closed by session 10 (2026-11-10, local Claude Code): owner answers
+| # | Topic | Decision |
 |---|---|---|
-| Q25 | Upstash | Phase 5 runs without Upstash (owner: "skip unless needed; ask first"). The cache, rate limit, global budget and breaker use an in-memory store per server instance. That is fine locally and for low traffic, but on Vercel each instance keeps its own copy, so limits are per instance. **Owner: add Upstash Redis (Vercel Marketplace, free) before or at launch?** If yes, it's one `KvStore` adapter. Asked again in sessions 4 and 5; no answer yet, nothing blocked |
-| Q28 | Analytics | ROADMAP Phase 6 lists optional privacy-friendly analytics (Vercel Web Analytics, free tier: page views only, no cookies). The privacy page currently says "no analytics". **Owner: turn on Vercel Web Analytics at launch, yes or no?** If yes: one `<Analytics />` component, a line on `/privacy`, and a bundle check. Asked again in session 5; no answer yet |
-| Q29 | Notes in shared links | The "Copy link" URL carries the answers to steps 1–3 but **not the free-text notes**, because links get pasted into chats and notes may hold project details. The rule ranking doesn't use notes, so the opened link shows the same ranking; only the "You mentioned" cards and the AI's view of the notes are missing. The result says "Your notes are not included in the link" when there were notes. **Owner: keep notes out (default), or include them?** If included: one field in `share-link.ts` and a line on `/privacy` |
-| Q35 | Custom domain | v1.4 ("make it look like a real product") would benefit from a custom domain: the `-pink` in `architecture-advisor-pink.vercel.app` is Vercel's random suffix and reads as a side project. A domain costs about USD 10–15 a year, which breaks the "free tiers only" rule, so it's the owner's call. Free alternative: rename the Vercel project so the default URL has no suffix (only if `architecture-advisor.vercel.app` is free). **Owner: buy a domain, try the rename, or keep the current URL?** Nothing is blocked |
-| Q35 | Custom domain | v1.4 ("make it look like a real product") would benefit from a custom domain: the `-pink` in `architecture-advisor-pink.vercel.app` is Vercel's random suffix and reads as a side project. A domain costs about USD 10–15 a year, which breaks the "free tiers only" rule, so it's the owner's call. Free alternative: rename the Vercel project so the default URL has no suffix (only if `architecture-advisor.vercel.app` is free). **Owner: buy a domain, try the rename, or keep the current URL?** Nothing is blocked |
+| Q25 | Upstash | **No.** Owner asked to close the remaining questions with the defaults. The cache, rate limits, global budget and breaker stay on the in-memory `KvStore` (per server instance). At this traffic that's enough; per-instance limits are a known, accepted gap. ADR-006 is marked superseded. Adding Upstash later is still one adapter |
+| Q28 | Analytics | **No** (owner, 2026-11-10). `/privacy` keeps saying "no analytics" |
+| Q29 | Notes in shared links | **Keep notes out** (the default). Links get pasted into chats and notes may hold project details |
+| Q35 | Custom domain | **No** (owner, 2026-11-10): free tiers only. The app stays at https://architecture-advisor-pink.vercel.app (renaming the Vercel project is not pursued, so existing links keep working) |
+| Q35 duplicate | Stale row | Q35 was listed twice under "Still open"; both rows are replaced by the one above |
+
+## Still open
+None. Usability rounds 2–3 (Q34) wait only for the owner to say go; they are listed in ROADMAP v1.3, not as a question.

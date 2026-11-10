@@ -22,7 +22,7 @@ How we work (owner decisions, they override defaults):
 
 Task (post-launch):
 0. If I say go for usability round 2 or 3 (Q34, ROADMAP v1.3), do that first.
-1. Apply my answers to Q25 (Upstash), Q28 (analytics) and Q29 (notes in shared links) if I've given them; otherwise keep the defaults (no / no / notes out) and don't ask again this session.
+1. Q25 (Upstash), Q28 (analytics), Q29 (notes in shared links) and Q35 (custom domain) are closed (2026-11-10: no / no / notes out / no). Don't reopen them.
 2. Show when the AI rate limit resets in the "rate limited" message (UI_UX States table), keeping `/advisor` under the 200 KB gz budget (190.0 KB now).
 3. If running locally: check the Vercel runtime logs (`event: "ai"` lines) for Gemini timeouts; if they're common, propose a timeout change in AI_INTEGRATION §1 before changing code.
 

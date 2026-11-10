@@ -1,6 +1,6 @@
 # ADR-006: Upstash Redis for cache and rate limits
 
-- **Status:** Accepted (2026-10-21); implementation is Phase 5
+- **Status:** Superseded (2026-11-10). Never set up; the owner chose to keep the in-memory `KvStore` per server instance (OPEN_QUESTIONS Q25). Kept for the record
 
 ## Context
 Serverless instances don't share memory, so an in-memory cache or rate counter is forgotten or split across copies. AI quota is the scarcest resource and needs per-IP and global limits.

@@ -10,7 +10,7 @@
 | UI | **Tailwind CSS + shadcn/ui** (copy-in accessible components built on Radix) | Fast, accessible form controls (segmented controls, tooltips, tabs); no heavy UI library |
 | Forms | Plain React state + the engine's `checkInput()` (decided in build session 2) | One validator shared by form, engine and API; no extra dependency. React Hook Form was the original plan |
 | AI | **Vercel AI SDK** (`ai` 7, `@ai-sdk/google` 4, `@ai-sdk/groq` 4) | One API for several providers, structured output (`generateText` + `Output.object`), abort/timeout support |
-| Cache / rate limit | **Upstash Redis** + `@upstash/ratelimit` (free: 256 MB, 500K commands/month) | Shared across serverless instances; HTTP-based (works in serverless) |
+| Cache / rate limit | **In-memory store** per server instance behind a `KvStore` interface (Upstash Redis was planned; not used, Q25) | Enough at this traffic; no extra account. Limits are per instance (caveat 2) |
 | Tests | **Vitest**, fast-check (property tests), Playwright (a few E2E), Testing Library | Fast unit tests for the engine; real-browser check of main flow |
 | Architecture checks | dependency-cruiser, `server-only` | Fitness functions (see ARCHITECTURE §8) |
 | Lint/format | ESLint 10 + Prettier (LF line endings, enforced by `.gitattributes`) | ESLint 9 is deprecated. `package.json` `overrides: { "eslint": "$eslint" }` makes the plugins inside `eslint-config-next` use our ESLint 10, which removes npm's peer-dependency warnings (a peer dependency is a package a plugin expects you to install yourself). |
@@ -24,11 +24,10 @@
 | Vercel Hobby | Monthly function/CPU allotments; 300 s max duration; **non-commercial only**; 1 h log retention | One function (`/api/explain`), ~1–15 s each. Far below limits |
 | Gemini Flash-Lite | ~15 RPM / 500 RPD (not officially published) | Primary AI |
 | Groq | 30 RPM / 1,000 RPD / 8K TPM | Fallback |
-| Upstash | 500K commands/month | ~4 commands/request ≈ 125K requests/month capacity |
 
 ## Caveats
 1. **Vercel Hobby is non-commercial.** Fine: owner confirmed no commercial plans (2026-10-21).
-2. **Serverless instances don't share memory.** Each request may run on a fresh copy of the function, so an in-memory cache or counter is forgotten or split across copies. That's why we use Upstash (decided). **Setup timing:** Phase 5, through the **Vercel Marketplace** (Vercel dashboard → Storage → Upstash Redis). That creates the database on the free plan and injects `UPSTASH_REDIS_REST_URL` / `_TOKEN` into the project automatically, so no keys are copied by hand. The owner does the one-time sign-up / consent click.
+2. **Serverless instances don't share memory.** Each request may run on a fresh copy of the function, so an in-memory cache or counter is forgotten or split across copies. Upstash was planned for this; the owner decided on 2026-11-10 not to add it (Q25), so caches and limits are per instance, an accepted gap at this traffic. The note below is kept in case that changes. **Setup timing:** Phase 5, through the **Vercel Marketplace** (Vercel dashboard → Storage → Upstash Redis). That creates the database on the free plan and injects `UPSTASH_REDIS_REST_URL` / `_TOKEN` into the project automatically, so no keys are copied by hand. The owner does the one-time sign-up / consent click.
 
 ## Alternatives considered
 | Option | Verdict |
